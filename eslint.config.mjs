@@ -1,5 +1,7 @@
 import { FlatCompat } from '@eslint/eslintrc';
 import stylistic from '@stylistic/eslint-plugin';
+import eslintParserTypeScript from '@typescript-eslint/parser';
+import eslintPluginBetterTailwindcss from 'eslint-plugin-better-tailwindcss';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -19,6 +21,46 @@ const eslintConfig = [
     semi: true,
     jsx: true,
   }),
+  {
+    files: ['**/*.{ts,tsx,cts,mts}'],
+    languageOptions: {
+      parser: eslintParserTypeScript,
+      parserOptions: {
+        project: true,
+      },
+    },
+  },
+  {
+    files: ['**/*.{jsx,tsx}'],
+    languageOptions: {
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    plugins: {
+      'better-tailwindcss': eslintPluginBetterTailwindcss,
+    },
+    rules: {
+      ...eslintPluginBetterTailwindcss.configs['recommended-warn'].rules,
+      ...eslintPluginBetterTailwindcss.configs['recommended-error'].rules,
+      'better-tailwindcss/multiline': [
+        'warn',
+        {
+          printWidth: 120,
+          preferSingleLine: true,
+        },
+      ],
+    },
+  },
+  {
+    settings: {
+      'better-tailwindcss': {
+        entryPoint: './src/app/globals.css',
+      },
+    },
+  },
   {
     plugins: {
       'simple-import-sort': simpleImportSort,
