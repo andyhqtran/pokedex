@@ -45,19 +45,20 @@ const eslintConfig = [
     rules: {
       ...eslintPluginBetterTailwindcss.configs['recommended-warn'].rules,
       ...eslintPluginBetterTailwindcss.configs['recommended-error'].rules,
-      'better-tailwindcss/multiline': [
+      'better-tailwindcss/enforce-consistent-line-wrapping': [
         'warn',
         {
           printWidth: 120,
           preferSingleLine: true,
         },
       ],
+      'better-tailwindcss/no-unregistered-classes': ['error', {
+        ignore: ['toaster'],
+      }],
     },
-  },
-  {
     settings: {
       'better-tailwindcss': {
-        entryPoint: './src/app/globals.css',
+        entryPoint: `${import.meta.dirname}/src/app/globals.css`,
       },
     },
   },
